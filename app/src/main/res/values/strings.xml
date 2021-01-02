@@ -8,6 +8,7 @@
     <string name="rsrp">RSRP</string>
     <string name="rsrq">RSRQ</string>
     <string name="snr">SNR</string>
+    <string name="no_network">No internet</string>
 
 
 </resources>
