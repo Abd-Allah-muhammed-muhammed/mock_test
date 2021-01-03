@@ -3,12 +3,62 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
-        android:background="@color/dark_gray"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-        <com.anychart.AnyChartView
 
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/li_no_internet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/img_no_network"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_no_network"/>
+
+
+
+            <TextView
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_below="@+id/img_no_network"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_network"/>
+
+            <FrameLayout
+                android:id="@+id/li_btn_start"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_46sdp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/_80sdp"
+                >
+                <ImageView
+                    android:id="@+id/btn_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:src="@drawable/ic_baseline_refresh_24" />
+
+
+
+            </FrameLayout>
+
+
+
+
+        </RelativeLayout>
+
+
+        <com.anychart.AnyChartView
+            android:background="@color/dark_gray"
             android:layout_marginBottom="@dimen/_8sdp"
             android:layout_above="@+id/li_btn_back"
             android:id="@+id/any_chart"

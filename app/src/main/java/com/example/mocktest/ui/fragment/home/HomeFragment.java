@@ -114,6 +114,10 @@ public class HomeFragment extends Fragment {
             homeViewModel.checkRsrp(binding ,rsrp,getResources());
             homeViewModel.checkRsrq(binding,rsrq, getResources());
             homeViewModel.checkSnir(binding,sinr,getResources());
+        }else {
+
+            binding.liNoInternet.setVisibility(View.VISIBLE);
+
         }
 
 

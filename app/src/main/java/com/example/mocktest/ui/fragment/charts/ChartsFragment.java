@@ -42,6 +42,7 @@ import static com.example.mocktest.utils.Constant.FROM_TYPE;
 import static com.example.mocktest.utils.Constant.P_TYPE;
 import static com.example.mocktest.utils.Constant.Q_TYPE;
 import static com.example.mocktest.utils.Constant.R_TYPE;
+import static com.example.mocktest.utils.StaticMethods.isNetworkAvailable;
 
 public class ChartsFragment extends Fragment {
 
@@ -65,9 +66,23 @@ public class ChartsFragment extends Fragment {
 
     private void handleClick() {
         binding.btnBack.setOnClickListener(view -> mainActivity.onBackPressed());
+        binding.btnRefresh.setOnClickListener(this::checkInternet);
     }
 
-    @Override
+
+    private void checkInternet(View view) {
+
+        if (isNetworkAvailable(getContext())) {
+            binding.liNoInternet.setVisibility(View.GONE);
+            initCartesianChart();
+            getDataCharts();
+        } else {
+            binding.liNoInternet.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+        @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ChartsViewModel.class);
@@ -83,34 +98,43 @@ public class ChartsFragment extends Fragment {
 
     private void getValues(RandomModel randomModel) {
 
-        randomModel.setTime(StaticMethods.GetCurrentTime());
+        if (randomModel.getThrowable()==null){
+
+
+            randomModel.setTime(StaticMethods.GetCurrentTime());
 
 
 
-        if (getArguments()!=null)
-        {
-            switch (getArguments().getString(FROM_TYPE)){
+            if (getArguments()!=null)
+            {
+                switch (getArguments().getString(FROM_TYPE)){
 
-                case P_TYPE:
+                    case P_TYPE:
 
-                    setPCharts(randomModel);
-                    break;
+                        setPCharts(randomModel);
+                        break;
 
-                case Q_TYPE:
+                    case Q_TYPE:
 
-                    setQCharts(randomModel);
+                        setQCharts(randomModel);
 
-                    break;
+                        break;
 
 
-                case R_TYPE:
+                    case R_TYPE:
 
-                    setRCharts(randomModel);
+                        setRCharts(randomModel);
 
-                    break;
+                        break;
 
+                }
             }
+        }else {
+
+            binding.liNoInternet.setVisibility(View.VISIBLE);
+
         }
+
 
 
     }
