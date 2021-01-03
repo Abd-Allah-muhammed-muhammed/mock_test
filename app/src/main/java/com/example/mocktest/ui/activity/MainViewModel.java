@@ -8,10 +8,14 @@ import java.util.concurrent.TimeUnit;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import org.jetbrains.annotations.NotNull;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.example.mocktest.network.RetrofitClass.getNetworkInstance;
@@ -24,16 +28,39 @@ public class MainViewModel extends ViewModel {
     public LiveData<RandomModel> getRandom(
     ) {
 
+
         Observable.interval(2, TimeUnit.SECONDS, Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .map(tick -> getNetworkInstance().getRandom())
                 .retry()
-                .subscribe(randomObservable -> randomObservable.subscribe(randomModel -> {
+                .subscribe(new DisposableObserver<Observable<RandomModel>>() {
+                    @Override
+                    public void onNext(@NotNull Observable<RandomModel> randomModelObservable) {
+                        try {
 
-                    data.postValue( randomModel);
-                }));
+                            data.postValue(randomModelObservable.blockingFirst());
 
+                        }catch (Exception e){
+                            data.postValue(new RandomModel(e));
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(@NotNull Throwable e) {
+                        data.postValue(new RandomModel(e));
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
         return data;
+
+
+
 
     }
 

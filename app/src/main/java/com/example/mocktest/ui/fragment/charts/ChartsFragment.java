@@ -59,7 +59,7 @@ public class ChartsFragment extends Fragment {
         binding.btnBack.setOnClickListener(view -> mainActivity.onBackPressed());
     }
 
-    @Override
+        @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ChartsViewModel.class);
@@ -75,18 +75,103 @@ public class ChartsFragment extends Fragment {
 
     private void getValues(RandomModel randomModel) {
 
-        randomModel.setTime(new Random().toString());
+        if (randomModel.getThrowable()==null){
 
-        int rsrp_p = 0;
-        int rsrp_s1 = 0;
-        int rsrp_s2 = 0;
 
-        if (randomModel.getRSRP() >= -80) {
+            randomModel.setTime(StaticMethods.GetCurrentTime());
+
+
+
+            if (getArguments()!=null)
+            {
+                switch (getArguments().getString(FROM_TYPE)){
+
+                    case P_TYPE:
+
+                        setPCharts(randomModel);
+                        break;
+
+                    case Q_TYPE:
+
+                        setQCharts(randomModel);
+
+                        break;
+
+
+                    case R_TYPE:
+
+                        setRCharts(randomModel);
+
+                        break;
+
+                }
+            }
+        }else {
+
+            binding.liNoInternet.setVisibility(View.VISIBLE);
+
+        }
+
+
+
+    }
+
+    private void setRCharts(RandomModel randomModel) {
+
+        int rsrR_p= 20 ;
+        int rsrR_s1 =5 ;
+        int rsrR_s2  = -5;
+
+        if (randomModel.getSINR()>=20){
+            rsrR_p = randomModel.getSINR();
+        }else if (randomModel.getSINR()>=5){
+
+            rsrR_s1 = randomModel.getSINR();
+        }else if (randomModel.getSINR()>=-5){
+
+            rsrR_s2 = randomModel.getSINR();
+        }
+
+        APIlib.getInstance().setActiveAnyChartView(binding.anyChart);
+        seriesData.add(new CustomDataEntry(randomModel.getTime(), rsrR_p, rsrR_s1, rsrR_s2));
+        set.data(seriesData);
+
+    }
+
+    private void setQCharts(RandomModel randomModel) {
+
+        int rsrq_p= -10 ;
+        int rsrq_s1 = -20 ;
+        int rsrq_s2  = -30;
+
+        if (randomModel.getRSRQ()>=-10){
+            rsrq_p = randomModel.getRSRQ();
+        }else if (randomModel.getRSRQ()>=-20){
+
+            rsrq_s1 = randomModel.getRSRQ();
+        }else if (randomModel.getRSRQ()>=-30){
+
+            rsrq_s2 = randomModel.getRSRQ();
+        }
+
+        APIlib.getInstance().setActiveAnyChartView(binding.anyChart);
+        seriesData.add(new CustomDataEntry(randomModel.getTime(), rsrq_p, rsrq_s1, rsrq_s2));
+        set.data(seriesData);
+
+    }
+
+    private void setPCharts(RandomModel randomModel) {
+
+        int rsrp_p= -60 ;
+        int rsrp_s1 = -90 ;
+        int rsrp_s2  = -120;
+
+        if (randomModel.getRSRP()>=-80){
             rsrp_p = randomModel.getRSRP();
-        } else if (randomModel.getRSRP() >= -100) {
+        }else if (randomModel.getRSRP()>=-100){
 
             rsrp_s1 = randomModel.getRSRP();
-        } else if (randomModel.getRSRP() >= -200) {
+        }else if (randomModel.getRSRP()>=-200){
 
             rsrp_s2 = randomModel.getRSRP();
         }
@@ -94,6 +179,7 @@ public class ChartsFragment extends Fragment {
         APIlib.getInstance().setActiveAnyChartView(binding.anyChart);
         seriesData.add(new CustomDataEntry(randomModel.getTime(), rsrp_p, rsrp_s1, rsrp_s2));
         set.data(seriesData);
+
     }
 
     private void initCartesianChart() {
@@ -112,9 +198,9 @@ public class ChartsFragment extends Fragment {
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
         cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-        seriesData.add(new CustomDataEntry("0", 0, 0, 0));
+        seriesData.add(new CustomDataEntry(StaticMethods.GetCurrentTime(), -60, -100, -180));
 
-        set = Set.instantiate();
+         set = Set.instantiate();
         set.data(seriesData);
 
         Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
@@ -122,7 +208,7 @@ public class ChartsFragment extends Fragment {
         Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
 
         Line series1 = cartesian.line(series1Mapping);
-        series1.name(getString(R.string.rsrp) + " P");
+        series1.name(getString(R.string.rsrp)+" P");
         series1.hovered().markers().enabled(true);
 
         series1.hovered().markers()
@@ -138,8 +224,9 @@ public class ChartsFragment extends Fragment {
         series1.color("#1E212B");
 
 
+
         Line series2 = cartesian.line(series2Mapping);
-        series2.name(getString(R.string.rsrp) + " S1");
+        series2.name(getString(R.string.rsrp)+" S1");
         series2.hovered().markers().enabled(true);
         series2.hovered().markers()
                 .type(MarkerType.CIRCLE)
@@ -152,7 +239,7 @@ public class ChartsFragment extends Fragment {
 
 
         Line series3 = cartesian.line(series3Mapping);
-        series3.name(getString(R.string.rsrp) + " S2");
+        series3.name(getString(R.string.rsrp)+" S2");
         series3.hovered().markers().enabled(true);
         series3.hovered().markers()
                 .type(MarkerType.CIRCLE)

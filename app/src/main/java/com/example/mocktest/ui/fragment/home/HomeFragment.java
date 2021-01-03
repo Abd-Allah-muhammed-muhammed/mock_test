@@ -1,5 +1,6 @@
 package com.example.mocktest.ui.fragment.home;
 
+import android.os.Binder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,10 @@ import com.example.mocktest.databinding.FragmentHomeBinding;
 import com.example.mocktest.model.RandomModel;
 import com.example.mocktest.ui.activity.MainActivity;
 
+import static com.example.mocktest.utils.Constant.FROM_TYPE;
+import static com.example.mocktest.utils.Constant.P_TYPE;
+import static com.example.mocktest.utils.Constant.Q_TYPE;
+import static com.example.mocktest.utils.Constant.R_TYPE;
 import static com.example.mocktest.utils.StaticMethods.isNetworkAvailable;
 
 public class HomeFragment extends Fragment {
@@ -37,7 +42,23 @@ public class HomeFragment extends Fragment {
 
         binding.pbP.setOnClickListener(view -> {
 
-            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chartsFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString(FROM_TYPE,P_TYPE);
+            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chartsFragment,bundle);
+        });
+
+        binding.pbQ.setOnClickListener(view -> {
+
+            Bundle   bundle = new Bundle();
+            bundle.putString(FROM_TYPE,Q_TYPE);
+            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chartsFragment,bundle);
+        });
+
+   binding.pbR.setOnClickListener(view -> {
+
+            Bundle   bundle = new Bundle();
+            bundle.putString(FROM_TYPE,R_TYPE);
+            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chartsFragment,bundle);
         });
 
 
@@ -93,6 +114,10 @@ public class HomeFragment extends Fragment {
             homeViewModel.checkRsrp(binding ,rsrp,getResources());
             homeViewModel.checkRsrq(binding,rsrq, getResources());
             homeViewModel.checkSnir(binding,sinr,getResources());
+        }else {
+
+            binding.liNoInternet.setVisibility(View.VISIBLE);
+
         }
 
 

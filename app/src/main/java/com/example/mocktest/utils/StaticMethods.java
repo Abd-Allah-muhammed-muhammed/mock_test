@@ -1,5 +1,6 @@
 package com.example.mocktest.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
@@ -8,6 +9,11 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class StaticMethods {
@@ -57,5 +63,16 @@ public class StaticMethods {
         }
         Log.i("update_statut", "Network is available : FALSE ");
         return false;
+    }
+
+
+    public static String GetCurrentTime() {
+        Date currentTime = Calendar.getInstance().getTime();
+        Log.i("time", String.valueOf(currentTime));
+        @SuppressLint("SimpleDateFormat")
+        DateFormat format = new SimpleDateFormat(" hh:mm:ss");
+        String time = format.format(currentTime);
+        Log.i("formattijg", time);
+        return time;
     }
 }
