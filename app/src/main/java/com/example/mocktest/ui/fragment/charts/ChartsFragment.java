@@ -40,13 +40,11 @@ import java.util.Random;
 public class ChartsFragment extends Fragment {
 
     private ChartsViewModel mViewModel;
-    ChartsFragmentBinding binding;
-    MainActivity mainActivity;
-
-
+    private ChartsFragmentBinding binding;
+    private MainActivity mainActivity;
     private Set set;
     private List<DataEntry> seriesData = new ArrayList<>();
-
+    private String NameCharts ;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -79,16 +77,16 @@ public class ChartsFragment extends Fragment {
 
         randomModel.setTime(new Random().toString());
 
-        int rsrp_p= 0 ;
-        int rsrp_s1 = 0 ;
-        int rsrp_s2  = 0;
+        int rsrp_p = 0;
+        int rsrp_s1 = 0;
+        int rsrp_s2 = 0;
 
-        if (randomModel.getRSRP()>=-80){
+        if (randomModel.getRSRP() >= -80) {
             rsrp_p = randomModel.getRSRP();
-        }else if (randomModel.getRSRP()>=-100){
+        } else if (randomModel.getRSRP() >= -100) {
 
             rsrp_s1 = randomModel.getRSRP();
-        }else if (randomModel.getRSRP()>=-200){
+        } else if (randomModel.getRSRP() >= -200) {
 
             rsrp_s2 = randomModel.getRSRP();
         }
@@ -116,7 +114,7 @@ public class ChartsFragment extends Fragment {
         cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
         seriesData.add(new CustomDataEntry("0", 0, 0, 0));
 
-         set = Set.instantiate();
+        set = Set.instantiate();
         set.data(seriesData);
 
         Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
@@ -124,7 +122,7 @@ public class ChartsFragment extends Fragment {
         Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
 
         Line series1 = cartesian.line(series1Mapping);
-        series1.name(getString(R.string.rsrp)+" P");
+        series1.name(getString(R.string.rsrp) + " P");
         series1.hovered().markers().enabled(true);
 
         series1.hovered().markers()
@@ -140,9 +138,8 @@ public class ChartsFragment extends Fragment {
         series1.color("#1E212B");
 
 
-
         Line series2 = cartesian.line(series2Mapping);
-        series2.name(getString(R.string.rsrp)+" S1");
+        series2.name(getString(R.string.rsrp) + " S1");
         series2.hovered().markers().enabled(true);
         series2.hovered().markers()
                 .type(MarkerType.CIRCLE)
@@ -155,7 +152,7 @@ public class ChartsFragment extends Fragment {
 
 
         Line series3 = cartesian.line(series3Mapping);
-        series3.name(getString(R.string.rsrp)+" S2");
+        series3.name(getString(R.string.rsrp) + " S2");
         series3.hovered().markers().enabled(true);
         series3.hovered().markers()
                 .type(MarkerType.CIRCLE)
