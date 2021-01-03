@@ -30,12 +30,18 @@ import com.example.mocktest.databinding.ChartsFragmentBinding;
 import com.example.mocktest.model.CustomDataEntry;
 import com.example.mocktest.model.RandomModel;
 import com.example.mocktest.ui.activity.MainActivity;
+import com.example.mocktest.utils.StaticMethods;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import static com.example.mocktest.utils.Constant.FROM_TYPE;
+import static com.example.mocktest.utils.Constant.P_TYPE;
+import static com.example.mocktest.utils.Constant.Q_TYPE;
+import static com.example.mocktest.utils.Constant.R_TYPE;
 
 public class ChartsFragment extends Fragment {
 
@@ -77,11 +83,87 @@ public class ChartsFragment extends Fragment {
 
     private void getValues(RandomModel randomModel) {
 
-        randomModel.setTime(new Random().toString());
+        randomModel.setTime(StaticMethods.GetCurrentTime());
 
-        int rsrp_p= 0 ;
-        int rsrp_s1 = 0 ;
-        int rsrp_s2  = 0;
+
+
+        if (getArguments()!=null)
+        {
+            switch (getArguments().getString(FROM_TYPE)){
+
+                case P_TYPE:
+
+                    setPCharts(randomModel);
+                    break;
+
+                case Q_TYPE:
+
+                    setQCharts(randomModel);
+
+                    break;
+
+
+                case R_TYPE:
+
+                    setRCharts(randomModel);
+
+                    break;
+
+            }
+        }
+
+
+    }
+
+    private void setRCharts(RandomModel randomModel) {
+
+        int rsrR_p= 20 ;
+        int rsrR_s1 =5 ;
+        int rsrR_s2  = -5;
+
+        if (randomModel.getSINR()>=20){
+            rsrR_p = randomModel.getSINR();
+        }else if (randomModel.getSINR()>=5){
+
+            rsrR_s1 = randomModel.getSINR();
+        }else if (randomModel.getSINR()>=-5){
+
+            rsrR_s2 = randomModel.getSINR();
+        }
+
+        APIlib.getInstance().setActiveAnyChartView(binding.anyChart);
+        seriesData.add(new CustomDataEntry(randomModel.getTime(), rsrR_p, rsrR_s1, rsrR_s2));
+        set.data(seriesData);
+
+    }
+
+    private void setQCharts(RandomModel randomModel) {
+
+        int rsrq_p= -10 ;
+        int rsrq_s1 = -20 ;
+        int rsrq_s2  = -30;
+
+        if (randomModel.getRSRQ()>=-10){
+            rsrq_p = randomModel.getRSRQ();
+        }else if (randomModel.getRSRQ()>=-20){
+
+            rsrq_s1 = randomModel.getRSRQ();
+        }else if (randomModel.getRSRQ()>=-30){
+
+            rsrq_s2 = randomModel.getRSRQ();
+        }
+
+        APIlib.getInstance().setActiveAnyChartView(binding.anyChart);
+        seriesData.add(new CustomDataEntry(randomModel.getTime(), rsrq_p, rsrq_s1, rsrq_s2));
+        set.data(seriesData);
+
+    }
+
+    private void setPCharts(RandomModel randomModel) {
+
+        int rsrp_p= -60 ;
+        int rsrp_s1 = -90 ;
+        int rsrp_s2  = -120;
 
         if (randomModel.getRSRP()>=-80){
             rsrp_p = randomModel.getRSRP();
@@ -96,6 +178,7 @@ public class ChartsFragment extends Fragment {
         APIlib.getInstance().setActiveAnyChartView(binding.anyChart);
         seriesData.add(new CustomDataEntry(randomModel.getTime(), rsrp_p, rsrp_s1, rsrp_s2));
         set.data(seriesData);
+
     }
 
     private void initCartesianChart() {
@@ -114,7 +197,7 @@ public class ChartsFragment extends Fragment {
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
         cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-        seriesData.add(new CustomDataEntry("0", 0, 0, 0));
+        seriesData.add(new CustomDataEntry(StaticMethods.GetCurrentTime(), -60, -100, -180));
 
          set = Set.instantiate();
         set.data(seriesData);
