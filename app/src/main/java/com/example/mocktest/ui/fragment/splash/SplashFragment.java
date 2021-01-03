@@ -29,7 +29,7 @@ public class SplashFragment extends Fragment {
     }
 
     private void handleClicks() {
-        binding.liBtnStart.setOnClickListener(view -> {
+        binding.btnStart.setOnClickListener(view -> {
             Navigation.findNavController(requireView()).navigate(R.id.action_splashFragment_to_homeFragment);
         });
     }

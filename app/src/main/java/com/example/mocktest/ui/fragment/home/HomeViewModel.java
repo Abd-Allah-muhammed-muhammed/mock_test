@@ -8,8 +8,6 @@ import com.example.mocktest.databinding.FragmentHomeBinding;
 import androidx.lifecycle.ViewModel;
 
 public class HomeViewModel extends ViewModel {
-
-
     public void checkRsrp(FragmentHomeBinding binding, int rsrp, Resources resources) {
 
         if (rsrp >= -60) {

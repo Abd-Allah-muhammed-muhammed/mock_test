@@ -8,6 +8,10 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.RotateAnimation;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -74,5 +78,28 @@ public class StaticMethods {
         String time = format.format(currentTime);
         Log.i("formattijg", time);
         return time;
+    }
+
+
+    public static void rotateView(View view ){
+
+
+
+        AnimationSet animSet = new AnimationSet(true);
+        animSet.setInterpolator(new DecelerateInterpolator());
+        animSet.setFillAfter(true);
+        animSet.setFillEnabled(true);
+
+        final RotateAnimation animRotate = new RotateAnimation(-90.0f, 0.0f,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+        animRotate.setDuration(1500);
+        animRotate.setFillAfter(true);
+        animSet.addAnimation(animRotate);
+
+        view.startAnimation(animSet);
+
+
     }
 }

@@ -1,14 +1,11 @@
 <resources>
     <string name="app_name">Mock Test</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="rsrp">RSRP</string>
     <string name="rsrq">RSRQ</string>
     <string name="snr">SNR</string>
     <string name="no_network">No internet</string>
+    <string name="start">Start</string>
+    <string name="back">Back</string>
 
 
 </resources>
